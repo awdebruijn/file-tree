@@ -1,0 +1,16 @@
+{
+  "name": "file-tree-server",
+  "version": "1.0.0",
+  "description": "Simple local server",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "test",
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
