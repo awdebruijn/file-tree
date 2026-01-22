@@ -32,35 +32,51 @@ export class Home {
   }
 
   structureBuilder(tree: FolderTree) {
-    const rootFolders: TreeNode[] = tree.folders.data
-      .filter((folder) => folder[2] === null)
-      .map((folder) => {
-        const node: TreeNode = { id: folder[0], name: folder[1], children: [] };
-        return node;
-      })
-      .sort((a, b) => a.name.localeCompare(b.name));
+    const folderData = tree.folders.data;
+    const folderTree: TreeNode = { id: 0, name: 'root', children: [] };
 
-    const rootFoldersIdMap = rootFolders.reduce(
-      (acc: { [key: number]: number }, el: TreeNode, i) => {
-        acc[el.id] = i;
-        return acc;
-      },
-      {},
-    );
+    folderData.forEach((folder) => {
+      // add to root children if parent is null
+      if (folder[2] === null) {
+        folderTree.children.push({ id: folder[0], name: folder[1], children: [] });
+      }
 
-    console.log('Root folders"', rootFolders, rootFoldersIdMap);
+      const parentId = folder[2];
+      if (!parentId) {
+        return;
+      }
 
-    const folders: TreeNode[] = [];
-    tree.folders.data.forEach((folder) => {
-      if (folder[2] !== null) {
-        const newNode: TreeNode = { id: folder[0], name: folder[1], children: [] };
+      // otherwise find parent folder and add folder to its children
+      // first check if parentFolder already exists in folderTree, if so add node to its children
+      const existing = this.findNode(parentId, folderTree);
+      if (existing) {
+        existing.children.push({ id: folder[0], name: folder[1], children: [] });
+        return;
+      }
 
-        const rootFolderId = rootFoldersIdMap[folder[2]];
-        if (rootFolderId) {
-          rootFolders.find((folder) => folder.id === rootFolderId)?.children.push(newNode);
-          return;
-        }
+      // else add parent to the folderTree
+      const parentFolder = folderData.find((f) => f[0] === parentId);
+      if (parentFolder) {
+        const newParentNode: TreeNode = {
+          id: parentFolder[0],
+          name: parentFolder[1],
+          children: [],
+        };
+        newParentNode.children.push({ id: folder[0], name: folder[1], children: [] });
       }
     });
+
+    console.log('Folder tree:', folderTree);
+  }
+
+  findNode(id: number, root: TreeNode): TreeNode | undefined {
+    function traverse(node: TreeNode): any {
+      if (node.id === id) return node;
+      for (const child of node.children) {
+        const result = traverse(child);
+        if (result) return result;
+      }
+    }
+    return traverse(root);
   }
 }
