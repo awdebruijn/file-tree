@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { FolderData, FolderDataSchema } from '../schemas/schemas';
+import { FolderData, FolderDataSchema } from '../models/schemas';
 import { map } from 'rxjs';
 
 @Injectable({

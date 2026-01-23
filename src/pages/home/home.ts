@@ -1,19 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { FolderTreeComponent } from '../../components/folder-tree/folder-tree.component';
 import { WareHouseService } from '../../services/ware-house.service';
-import { Folder, FolderData } from '../../schemas/schemas';
-
-type ItemNode = {
-  id: number;
-  name: string;
-};
-
-type TreeNode = {
-  id: number;
-  name: string;
-  children: TreeNode[];
-  items: ItemNode[];
-};
+import { Folder, FolderData } from '../../models/schemas';
 
 @Component({
   selector: 'app-home',
