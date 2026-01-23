@@ -1,9 +1,8 @@
-import { Folder, FolderData } from '../models/schemas';
-import { ItemNode, TreeNode } from '../models/types';
+import { Folder, FolderData, ItemNode, ItemNodeSchema, TreeNode } from '../models/schemas';
 
 export function treeNodeBuilder(folderData: FolderData) {
   const foldersData: Folder[] = [...folderData.folders.data];
-  const folderTree: TreeNode = { id: 0, name: 'root', children: [], items: [] };
+  const folderTree: TreeNode = { id: 0, name: 'root', children: [], items: [], selected: false };
 
   foldersData.forEach((currentFolderData) => {
     const [id, name, parentId] = currentFolderData;
@@ -12,6 +11,7 @@ export function treeNodeBuilder(folderData: FolderData) {
       name,
       children: [],
       items: [],
+      selected: false,
     };
 
     // If folder has no parent, add to root node's children
@@ -25,7 +25,7 @@ export function treeNodeBuilder(folderData: FolderData) {
 
     // NOTE: Upon studying the order of the array, it very much looks like we can assume we make sure in the backend service that
     // when the next item in folderData is handled, its parent already exists.
-    // So there is no need to handle the case if it doesn't, making the algorithm more efficient.
+    // So there is no need to handle the case if it doesn't, making the algorithm simpler and more efficient.
 
     // Find parent folder and add the folder to its children
     const parentFolder = findNodeById(parentId, folderTree);
@@ -48,6 +48,7 @@ export function itemFiller(folderData: FolderData, folderTree: TreeNode) {
     const newItemNode: ItemNode = {
       id,
       name,
+      selected: false,
     };
 
     const itemParentFolder = findNodeById(folderId, folderTreeClone);
@@ -77,6 +78,46 @@ export function findNodeById(id: number, root: TreeNode): TreeNode | undefined {
   return traverse(root);
 }
 
+export function findItemNodeById(id: number, root: TreeNode): ItemNode | undefined {
+  function findItemOnNode(node: TreeNode) {
+    return node.items.find((item) => item.id === id);
+  }
+
+  function traverse(node: TreeNode): ItemNode | undefined {
+    const item = findItemOnNode(node);
+    if (item) {
+      return item;
+    }
+
+    for (let child of node.children) {
+      const item = traverse(child);
+      if (item) {
+        return item;
+      }
+    }
+
+    return undefined;
+  }
+
+  return traverse(root);
+}
+
+export function updateItemSelectedState(id: number, folderTree: TreeNode) {
+  const folderTreeCopy = structuredClone(folderTree);
+  const itemToUpdate = findItemNodeById(id, folderTree);
+
+  if (itemToUpdate) {
+    itemToUpdate.selected = !itemToUpdate.selected;
+  }
+
+  return folderTreeCopy;
+}
+
+export function isItemNode(node: ItemNode | TreeNode): boolean {
+  return ItemNodeSchema.safeParse(node).success;
+}
+
+// TODO: make into one generic sorting function
 export function sortTreeNodesByName(nodes: TreeNode[]): TreeNode[] {
   const nodesCopy = [...nodes];
   nodesCopy.sort((a, b) => {

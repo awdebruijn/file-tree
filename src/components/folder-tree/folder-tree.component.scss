@@ -1,17 +1,21 @@
 ul {
   list-style-type: none;
   padding-left: var(--default-spacing);
+}
 
-  li {
-  }
+input[type='checkbox'] {
+  width: 16px;
+  height: 16px;
 }
 
 .root-folder {
+  padding-top: var(--half-spacing);
+  padding-bottom: var(--half-spacing);
   max-width: 275px;
   border: 1px solid var(--border);
   border-radius: var(--border-radius);
 }
 
 .folder {
-  lineh-height: 20px;
+  line-height: 20px;
 }

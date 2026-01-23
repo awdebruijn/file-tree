@@ -1,0 +1,19 @@
+.flex {
+  display: flex;
+}
+
+.flex-row {
+  flex-flow: row nowrap;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.justify-start {
+  justify-content: flex-start;
+}
+
+.align-center {
+  align-items: center;
+}

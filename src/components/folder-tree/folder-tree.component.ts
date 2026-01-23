@@ -1,6 +1,7 @@
-import { Component, effect, input, signal } from '@angular/core';
-import { TreeNode } from '../../models/types';
+import { Component, computed, effect, model } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
+import { findItemNodeById, findNodeById } from '../../helpers/folder-tree.helpers';
+import { TreeNode } from '../../models/schemas';
 
 @Component({
   selector: 'app-folder-tree-component',
@@ -10,48 +11,83 @@ import { NgTemplateOutlet } from '@angular/common';
   imports: [NgTemplateOutlet],
 })
 export class FolderTreeComponent {
-  folderTree = input.required<TreeNode>();
+  folderTree = model.required<TreeNode>();
 
-  selectedItemIds = signal<number[]>([]);
-  selectedFolderIds = signal<number[]>([]);
+  selectedItems = computed(() => {
+    const currentFolderTree = this.folderTree();
+    return this.getAllSelectedItems(currentFolderTree);
+  });
 
   constructor() {
-    effect(() => console.log('selected folder ids:', this.selectedFolderIds()));
-    effect(() => console.log('selected item ids:', this.selectedItemIds()));
+    effect(() => console.log('selected items:', this.selectedItems()));
   }
 
-  isIndeterminate(children: TreeNode[]) {
-    const childrenIds = children.map((child) => child.id);
-    const someSelected = this.selectedItemIds().some((itemId) =>
-      childrenIds.find((id) => id === itemId),
-    );
-
-    const allSelected = this.selectedItemIds().every((itemId) =>
-      childrenIds.find((id) => id === itemId),
-    );
-
-    return allSelected ? false : someSelected;
+  updateFolderSelectedState(id: number) {
+    const folderTree = structuredClone(this.folderTree());
+    const nodeToUpdate = findNodeById(id, folderTree);
+    if (nodeToUpdate) {
+      nodeToUpdate.selected = !nodeToUpdate.selected;
+      this.updateChildNodes(nodeToUpdate, nodeToUpdate.selected, folderTree);
+      this.folderTree.set(folderTree);
+    }
   }
 
-  toggleFolderSelected(id: number) {
-    const selectedIds = this.selectedFolderIds();
-    if (selectedIds.some((selectedId) => selectedId === id)) {
-      const filtered = selectedIds.filter((selectedId) => selectedId !== id);
-      this.selectedFolderIds.set(filtered);
-      return;
+  updateChildNodes(node: TreeNode, selected: boolean, folderTree: TreeNode) {
+    function traverseDown(node: TreeNode, selected: boolean) {
+      if (node.children.length > 0) {
+        node.children.forEach((child) => {
+          child.selected = selected;
+          traverseDown(child, selected);
+        });
+      }
+
+      if (node.items.length > 0) {
+        node.items.forEach((item) => {
+          const itemToUpdate = findItemNodeById(item.id, folderTree);
+          if (itemToUpdate) {
+            itemToUpdate.selected = selected;
+          }
+        });
+      }
     }
 
-    this.selectedFolderIds.update((ids) => [...ids, id]);
+    traverseDown(node, selected);
   }
 
-  toggleItemSelected(id: number) {
-    const selectedItemIds = this.selectedItemIds();
-    if (selectedItemIds.some((selectedId) => selectedId === id)) {
-      const filtered = selectedItemIds.filter((selectedId) => selectedId !== id);
-      this.selectedItemIds.set(filtered);
-      return;
+  updateItemSelectedState(id: number) {
+    const folderTree = structuredClone(this.folderTree());
+    const itemToUpdate = findItemNodeById(id, folderTree);
+    if (itemToUpdate) {
+      itemToUpdate.selected = !itemToUpdate.selected;
+      this.folderTree.set(folderTree);
+    }
+  }
+
+  getAllSelectedItems(root: TreeNode) {
+    let selectedIds: number[] = [];
+
+    function traverseDown(node: TreeNode) {
+      if (!node) {
+        return;
+      }
+
+      if (node.items.length > 0) {
+        node.items.forEach((item) => {
+          if (item.selected) {
+            selectedIds = [...selectedIds, item.id];
+          }
+        });
+      }
+
+      if (node.children.length > 0) {
+        node.children.forEach((child) => {
+          traverseDown(child);
+        });
+      }
+
+      return selectedIds;
     }
 
-    this.selectedItemIds.update((ids) => [...ids, id]);
+    return traverseDown(root);
   }
 }
