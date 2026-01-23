@@ -1,0 +1,17 @@
+ul {
+  list-style-type: none;
+  padding-left: var(--default-spacing);
+
+  li {
+  }
+}
+
+.root-folder {
+  max-width: 275px;
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius);
+}
+
+.folder {
+  lineh-height: 20px;
+}

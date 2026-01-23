@@ -45,14 +45,14 @@ export function itemFiller(folderData: FolderData, folderTree: TreeNode) {
 
   itemsData.forEach((currentItem) => {
     const [id, name, folderId] = currentItem;
-    const newItemNodeToAdd: ItemNode = {
+    const newItemNode: ItemNode = {
       id,
       name,
     };
 
     const itemParentFolder = findNodeById(folderId, folderTreeClone);
     if (itemParentFolder) {
-      itemParentFolder.items = [...itemParentFolder.items, newItemNodeToAdd];
+      itemParentFolder.items = [...itemParentFolder.items, newItemNode];
       itemParentFolder.items = sortItemNodesByName(itemParentFolder.items);
     }
   });

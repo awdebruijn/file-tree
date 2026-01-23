@@ -1,0 +1,47 @@
+// half paddings
+.pl-2 {
+  padding-left: var(--half-spacing);
+}
+.pr-2 {
+  padding-right: var(--half-spacing);
+}
+.px-2 {
+  padding-left: var(--half-spacing);
+  padding-right: var(--half-spacing);
+}
+
+// full paddings
+.pl-4 {
+  padding-left: var(--default-spacing);
+}
+.pr-4 {
+  padding-right: var(--default-spacing);
+}
+.px-4 {
+  padding-left: var(--default-spacing);
+  padding-right: var(--default-spacing);
+}
+
+// half margins
+.ml-2 {
+  margin-left: var(--half-spacing);
+}
+.mr-2 {
+  margin-right: var(--half-spacing);
+}
+.mx-2 {
+  margin-left: var(--half-spacing);
+  margin-right: var(--half-spacing);
+}
+
+// full margins
+.ml-4 {
+  margin-left: var(--default-spacing);
+}
+.mr-4 {
+  margin-right: var(--default-spacing);
+}
+.mx-4 {
+  margin-left: var(--default-spacing);
+  margin-right: var(--default-spacing);
+}

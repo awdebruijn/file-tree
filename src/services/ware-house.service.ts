@@ -10,7 +10,7 @@ export class WareHouseService {
   private http = inject(HttpClient);
   baseUrl = 'http://localhost:3000/api';
 
-  getFolderStructure() {
+  getFolderData() {
     return this.http.get<FolderData>(`${this.baseUrl}/warehouse/folder-data/`).pipe(
       map((data) => {
         const parsedData = FolderDataSchema.safeParse(data);

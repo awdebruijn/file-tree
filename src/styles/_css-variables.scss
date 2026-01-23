@@ -1,0 +1,18 @@
+@layer base {
+  :root {
+    // colors
+    --surface: hsl(0, 0%, 100%);
+    --hover: hsl(0, 0%, 96%);
+    --text: hsl(195, 3%, 24%);
+    --border: hsl(210, 0%, 89%);
+    --primary: hsl(213, 97%, 53%);
+
+    // measurements
+    --default-spacing: 16px;
+    --half-spacing: 8px;
+    --border-radius: 3px;
+
+    // font
+    --default-font-size: 14px;
+  }
+}
