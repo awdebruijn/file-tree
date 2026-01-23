@@ -41,6 +41,9 @@ export class Home {
       // If folder has no parent, add to root node's children
       if (parentId === null) {
         folderTree.children = [...folderTree.children, newFolderNode];
+        folderTree.children.sort((a, b) => {
+          return a.name.localeCompare(b.name);
+        });
         return;
       }
 
@@ -52,6 +55,7 @@ export class Home {
       const parentFolder = this.findNodeById(parentId, folderTree);
       if (parentFolder) {
         parentFolder.children = [...parentFolder.children, newFolderNode];
+        parentFolder.children = this.sortTreeNodeChildrenByName(parentFolder.children);
         return;
       }
     });
@@ -73,6 +77,7 @@ export class Home {
       const itemParentFolder = this.findNodeById(folderId, folderTreeClone);
       if (itemParentFolder) {
         itemParentFolder.items = [...itemParentFolder.items, newItemNodeToAdd];
+        itemParentFolder.items = this.sortItemsByName(itemParentFolder.items);
       }
     });
 
@@ -94,5 +99,23 @@ export class Home {
     }
 
     return traverse(root);
+  }
+
+  sortTreeNodeChildrenByName(children: TreeNode[]): TreeNode[] {
+    const childrenCopy = [...children];
+    childrenCopy.sort((a, b) => {
+      return a.name.localeCompare(b.name);
+    });
+
+    return childrenCopy;
+  }
+
+  sortItemsByName(children: ItemNode[]): ItemNode[] {
+    const childrenCopy = [...children];
+    childrenCopy.sort((a, b) => {
+      return a.name.localeCompare(b.name);
+    });
+
+    return childrenCopy;
   }
 }
