@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
+import { TreeNode } from '../../models/types';
 
 @Component({
   selector: 'app-folder-tree-component',
@@ -6,4 +7,6 @@ import { Component } from '@angular/core';
   styleUrl: './folder-tree.component.scss',
   standalone: true,
 })
-export class FolderTreeComponent {}
+export class FolderTreeComponent {
+  folderTree = input<TreeNode>();
+}

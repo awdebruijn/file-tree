@@ -1,9 +1,9 @@
-type ItemNode = {
+export type ItemNode = {
   id: number;
   name: string;
 };
 
-type TreeNode = {
+export type TreeNode = {
   id: number;
   name: string;
   children: TreeNode[];
