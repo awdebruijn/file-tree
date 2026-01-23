@@ -1,12 +1,16 @@
-@let rootFolders = folderTree()?.children;
-
 <ng-template #recursiveFolders let-folders>
   <ul class="text-base">
     @for (folder of folders; track folder.id) {
       <li class="folder">
         <p class="semi-bold">
-          <input type="checkbox" [id]="folder.id" class="mr-2" />
-          <label [for]="folder.id">{{ folder.name }}</label>
+          <input
+            type="checkbox"
+            [id]="'folder' + folder.id"
+            [indeterminate]="isIndeterminate(folder.children)"
+            (click)="toggleFolderSelected(folder.id)"
+            class="mr-2"
+          />
+          <label [for]="'folder' + folder.id">{{ folder.name }}</label>
         </p>
 
         <ng-container
@@ -16,8 +20,14 @@
         <ul class="items">
           @for (item of folder.items; track item.id) {
             <li class="item">
-              <input type="checkbox" [id]="item.id" class="mr-2" />
-              <label [for]="item.id">{{ item.name }}</label>
+              <input
+                type="checkbox"
+                [id]="'item' + item.id"
+                [indeterminate]=""
+                (click)="toggleItemSelected(item.id)"
+                class="mr-2"
+              />
+              <label [for]="'item' + item.id">{{ item.name }}</label>
             </li>
           }
         </ul>
@@ -26,6 +36,7 @@
   </ul>
 </ng-template>
 
+@let rootFolders = folderTree()?.children;
 <section class="root-folder">
   <ng-container
     *ngTemplateOutlet="recursiveFolders; context: { $implicit: rootFolders }"

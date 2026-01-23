@@ -1,7 +1,9 @@
 @use './css-variables';
 @use './font-styles';
 @use './spacing';
+@use './layout';
 
+// CSS reset
 /* 1. Use a more-intuitive box-sizing model */
 *,
 *::before,
