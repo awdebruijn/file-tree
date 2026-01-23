@@ -1,4 +1,4 @@
-const response = {
+const folderDataResponse = {
   folders: {
     columns: ['id', 'title', 'parent_id'],
     data: [
@@ -24,4 +24,4 @@ const response = {
   },
 };
 
-export default response;
+export default folderDataResponse;
