@@ -1,12 +1,18 @@
 import { Component, inject } from '@angular/core';
 import { FolderTreeComponent } from '../../components/folder-tree/folder-tree.component';
 import { WareHouseService } from '../../services/ware-house.service';
-import { FolderData } from '../../schemas/schemas';
+import { Folder, FolderData } from '../../schemas/schemas';
+
+type ItemNode = {
+  id: number;
+  name: string;
+};
 
 type TreeNode = {
   id: number;
   name: string;
   children: TreeNode[];
+  items: ItemNode[];
 };
 
 @Component({
@@ -21,9 +27,9 @@ export class Home {
 
   constructor() {
     this.wareHouseService.getFolderStructure().subscribe({
-      next: (data: any) => {
-        console.log('Folder Structure:', data);
-        this.treeNodeBuilder(data);
+      next: (data: FolderData) => {
+        const folderTree = this.treeNodeBuilder(data);
+        console.log(this.itemFiller(data, folderTree));
       },
       error: (error: any) => {
         console.error('Error fetching folder structure:', error);
@@ -32,35 +38,57 @@ export class Home {
   }
 
   treeNodeBuilder(folderData: FolderData) {
-    const foldersData = folderData.folders.data;
-    const folderTree: TreeNode = { id: 0, name: 'root', children: [] };
+    const foldersData: Folder[] = [...folderData.folders.data];
+    const folderTree: TreeNode = { id: 0, name: 'root', children: [], items: [] };
 
     foldersData.forEach((currentFolderData) => {
-      // If folder has no parent, add to root node's children
-      const parentId = currentFolderData[2];
-      const newFolderNodeToAdd: TreeNode = {
-        id: currentFolderData[0],
-        name: currentFolderData[1],
+      const [id, name, parentId] = currentFolderData;
+      const newFolderNode: TreeNode = {
+        id,
+        name,
         children: [],
+        items: [],
       };
 
+      // If folder has no parent, add to root node's children
       if (parentId === null) {
-        folderTree.children.push(newFolderNodeToAdd);
+        folderTree.children = [...folderTree.children, newFolderNode];
         return;
       }
 
-      // NOTE: The order of the array makes sure when the next item in folderData is handled, its parent already exist,
-      // so there is no need to handle the case if it doesn't.
+      // NOTE: Upon studying the order of the array, it very much looks like we can assume we make sure in the backend service that
+      // when the next item in folderData is handled, its parent already exists.
+      // So there is no need to handle the case if it doesn't, making the algorithm more efficient.
 
       // Find parent folder and add the folder to its children
-      const existingFolder = this.findNodeById(parentId, folderTree);
-      if (existingFolder) {
-        existingFolder.children.push(newFolderNodeToAdd);
+      const parentFolder = this.findNodeById(parentId, folderTree);
+      if (parentFolder) {
+        parentFolder.children = [...parentFolder.children, newFolderNode];
         return;
       }
     });
 
-    console.log('Folder tree:', folderTree);
+    return folderTree;
+  }
+
+  itemFiller(folderData: FolderData, folderTree: TreeNode) {
+    const folderTreeClone = structuredClone(folderTree);
+    const itemsData = [...folderData.items.data];
+
+    itemsData.forEach((currentItem) => {
+      const [id, name, folderId] = currentItem;
+      const newItemNodeToAdd: ItemNode = {
+        id,
+        name,
+      };
+
+      const itemParentFolder = this.findNodeById(folderId, folderTreeClone);
+      if (itemParentFolder) {
+        itemParentFolder.items = [...itemParentFolder.items, newItemNodeToAdd];
+      }
+    });
+
+    return folderTreeClone;
   }
 
   findNodeById(id: number, root: TreeNode): TreeNode | undefined {
