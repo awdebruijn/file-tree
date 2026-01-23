@@ -1,4 +1,4 @@
-import { Folder, FolderData, ItemNode, ItemNodeSchema, TreeNode } from '../models/schemas';
+import { Folder, FolderData, ItemNode, TreeNode } from '../models/schemas';
 
 export function treeNodeBuilder(folderData: FolderData) {
   const foldersData: Folder[] = [...folderData.folders.data];
@@ -102,22 +102,7 @@ export function findItemNodeById(id: number, root: TreeNode): ItemNode | undefin
   return traverse(root);
 }
 
-export function updateItemSelectedState(id: number, folderTree: TreeNode) {
-  const folderTreeCopy = structuredClone(folderTree);
-  const itemToUpdate = findItemNodeById(id, folderTree);
-
-  if (itemToUpdate) {
-    itemToUpdate.selected = !itemToUpdate.selected;
-  }
-
-  return folderTreeCopy;
-}
-
-export function isItemNode(node: ItemNode | TreeNode): boolean {
-  return ItemNodeSchema.safeParse(node).success;
-}
-
-// TODO: make into one generic sorting function
+// TODO: make these function into one generic sorting function
 export function sortTreeNodesByName(nodes: TreeNode[]): TreeNode[] {
   const nodesCopy = [...nodes];
   nodesCopy.sort((a, b) => {

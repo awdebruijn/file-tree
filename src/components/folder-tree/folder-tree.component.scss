@@ -11,11 +11,22 @@ input[type='checkbox'] {
 .root-folder {
   padding-top: var(--half-spacing);
   padding-bottom: var(--half-spacing);
+  margin-bottom: var(--default-spacing);
   max-width: 275px;
   border: 1px solid var(--border);
   border-radius: var(--border-radius);
+  line-height: 20px;
 }
 
-.folder {
-  line-height: 20px;
+label {
+  width: 100%;
+}
+
+.folder-header,
+li.item {
+  padding: 7px 0;
+
+  &:hover {
+    background-color: var(--hover);
+  }
 }

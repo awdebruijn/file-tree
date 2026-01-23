@@ -2,7 +2,7 @@
   <ul>
     @for (folder of folders; track folder.id) {
       <li class="folder">
-        <p class="flex flex-row justify-start align-center semi-bold">
+        <p class="folder-header flex flex-row justify-start align-center semi-bold">
           <input
             type="checkbox"
             [id]="'folder' + folder.id"
@@ -11,7 +11,7 @@
             (click)="updateFolderSelectedState(folder.id)"
             class="mr-2"
           />
-          <label [for]="'folder' + folder.id">{{ folder.id }} {{ folder.name }}</label>
+          <label [for]="'folder' + folder.id">{{ folder.name }}</label>
         </p>
 
         <ng-container
@@ -28,7 +28,7 @@
                 (click)="updateItemSelectedState(item.id)"
                 class="mr-2"
               />
-              <label [for]="'item' + item.id">{{ item.id }} {{ item.name }}</label>
+              <label [for]="'item' + item.id">{{ item.name }}</label>
             </li>
           }
         </ul>
@@ -38,10 +38,12 @@
 </ng-template>
 
 @let rootFolders = folderTree()?.children;
-<section class="root-folder text-base">
-  <ng-container
-    *ngTemplateOutlet="recursiveFolders; context: { $implicit: rootFolders }"
-  ></ng-container>
+<section class="text-base">
+  <div class="root-folder">
+    <ng-container
+      *ngTemplateOutlet="recursiveFolders; context: { $implicit: rootFolders }"
+    ></ng-container>
+  </div>
 
-  <div>Selected item IDs: {{ selectedItems() }}</div>
+  <p>Selected item IDs: {{ selectedItems() }}</p>
 </section>
