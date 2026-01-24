@@ -34,6 +34,17 @@
   margin-right: var(--half-spacing);
 }
 
+.mt-2 {
+  margin-top: var(--half-spacing);
+}
+.mb-2 {
+  margin-bottom: var(--half-spacing);
+}
+.my-2 {
+  margin-top: var(--half-spacing);
+  margin-bottom: var(--half-spacing);
+}
+
 // full margins
 .ml-4 {
   margin-left: var(--default-spacing);
@@ -44,4 +55,15 @@
 .mx-4 {
   margin-left: var(--default-spacing);
   margin-right: var(--default-spacing);
+}
+
+.mt-4 {
+  margin-top: var(--default-spacing);
+}
+.mb-4 {
+  margin-bottom: var(--default-spacing);
+}
+.my-4 {
+  margin-top: var(--default-spacing);
+  margin-bottom: var(--default-spacing);
 }

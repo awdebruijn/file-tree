@@ -1,0 +1,18 @@
+button {
+  cursor: pointer;
+  padding: var(--half-spacing) var(--default-spacing);
+  background: var(--primary);
+  color: var(--surface);
+  border-radius: var(--border-radius);
+  border: none;
+  transition: background-color ease 0.2s;
+
+  &:hover {
+    background: var(--hover);
+    color: inherit;
+  }
+
+  &:active {
+    transform: scale3d(0.98, 0.98, 1);
+  }
+}

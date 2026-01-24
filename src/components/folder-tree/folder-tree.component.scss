@@ -1,3 +1,10 @@
+:host {
+  display: contents;
+}
+aside {
+  max-width: 275px;
+}
+
 ul {
   list-style-type: none;
   padding-left: var(--default-spacing);
@@ -22,11 +29,13 @@ input[type='checkbox'] {
 label {
   width: 100%;
   line-height: 34px;
+  cursor: pointer;
 }
 
 .folder-header,
 li.item {
   position: relative;
+  cursor: pointer;
 
   &:hover {
     &:after {
