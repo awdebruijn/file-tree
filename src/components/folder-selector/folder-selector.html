@@ -1,9 +1,10 @@
 <section>
-  @if (folderTree(); as folderTree) {
+  @if (folderTree$ | async; as folderTree) {
     <app-folder-tree-component
       #folderTreeComponent
       [folderTree]="folderTree"
     ></app-folder-tree-component>
+
     <div class="flex flex-column align-end">
       <button class="mt-4" (click)="clearSelection()">Clear selection</button>
     </div>
