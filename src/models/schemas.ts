@@ -20,6 +20,8 @@ export type Item = z.infer<typeof ItemSchema>;
 
 export { FolderDataSchema, FolderSchema, ItemSchema };
 
+// TODO split selected and indeterminate props to interfaces for use in UI only
+// Back end should not be aware of this
 const ItemNodeSchema = z.object({
   id: z.number(),
   name: z.string(),

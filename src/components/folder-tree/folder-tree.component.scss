@@ -21,9 +21,23 @@ input[type='checkbox'] {
 
 label {
   width: 100%;
+  line-height: 34px;
 }
 
 .folder-header,
 li.item {
-  padding: 7px 0;
+  position: relative;
+
+  &:hover {
+    &:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 275px;
+      height: 34px;
+      background: var(--hover);
+      z-index: -1;
+    }
+  }
 }

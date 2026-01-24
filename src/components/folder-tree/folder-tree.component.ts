@@ -23,8 +23,9 @@ export class FolderTreeComponent {
   });
 
   updateFolderSelectedState(id: number) {
-    const folderTree = structuredClone(this.folderTree());
+    const folderTree = structuredClone(this.uiFolderTree());
     const nodeToUpdate = findNodeById(id, folderTree);
+
     if (nodeToUpdate) {
       nodeToUpdate.selected = !nodeToUpdate.selected;
       this.updateChildNodes(nodeToUpdate, nodeToUpdate.selected, folderTree);
@@ -55,7 +56,7 @@ export class FolderTreeComponent {
   }
 
   updateItemSelectedState(id: number) {
-    const folderTree = structuredClone(this.folderTree());
+    const folderTree = structuredClone(this.uiFolderTree());
     const itemToUpdate = findItemNodeById(id, folderTree);
     if (itemToUpdate) {
       itemToUpdate.selected = !itemToUpdate.selected;

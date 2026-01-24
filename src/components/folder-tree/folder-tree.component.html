@@ -2,20 +2,22 @@
   <ul>
     @for (folder of folders; track folder.id) {
       <li class="folder">
-        <p class="folder-header flex flex-row justify-start align-center semi-bold">
-          <input
-            type="checkbox"
-            [id]="'folder' + folder.id"
-            [checked]="folder.selected"
-            [indeterminate]="folder.indeterminate"
-            (click)="
-              $event.preventDefault();
-              $event.stopPropagation();
-              updateFolderSelectedState(folder.id)
-            "
-            class="mr-2"
-          />
-          <label [for]="'folder' + folder.id">{{ folder.name }}</label>
+        <p class="folder-header">
+          <label [for]="'folder' + folder.id" class="item flex flex-row justify-start align-center">
+            <input
+              type="checkbox"
+              [id]="'folder' + folder.id"
+              [checked]="folder.selected"
+              [indeterminate]="folder.indeterminate"
+              (click)="
+                $event.preventDefault();
+                $event.stopPropagation();
+                updateFolderSelectedState(folder.id)
+              "
+              class="mr-2"
+            />
+            {{ folder.name }}</label
+          >
         </p>
 
         <ng-container
@@ -24,19 +26,21 @@
 
         <ul class="items">
           @for (item of folder.items; track item.id) {
-            <li class="item flex flex-row justify-start align-center">
-              <input
-                type="checkbox"
-                [id]="'item' + item.id"
-                [checked]="item.selected"
-                (click)="
-                  $event.preventDefault();
-                  $event.stopPropagation();
-                  updateItemSelectedState(item.id)
-                "
-                class="mr-2"
-              />
-              <label [for]="'item' + item.id">{{ item.name }}</label>
+            <li class="item">
+              <label [for]="'item' + item.id" class="flex flex-row justify-start align-center">
+                <input
+                  type="checkbox"
+                  [id]="'item' + item.id"
+                  [checked]="item.selected"
+                  (click)="
+                    $event.preventDefault();
+                    $event.stopPropagation();
+                    updateItemSelectedState(item.id)
+                  "
+                  class="mr-2"
+                />
+                {{ item.name }}</label
+              >
             </li>
           }
         </ul>
