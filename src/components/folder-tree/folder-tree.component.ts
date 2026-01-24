@@ -1,13 +1,13 @@
 import { Component, computed, model } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
+import { findNodeById } from '../../helpers/folder-tree.helpers';
+import { TreeNode } from '../../models/schemas';
 import {
   findItemNodeById,
-  findNodeById,
   getAllSelectedItems,
-  updateChildNodes,
+  updateAllChildNodes,
   updateFolderCheckBoxStates,
-} from '../../helpers/folder-tree.helpers';
-import { TreeNode } from '../../models/schemas';
+} from './folder-tree.component.helpers';
 
 @Component({
   selector: 'app-folder-tree-component',
@@ -29,12 +29,14 @@ export class FolderTreeComponent {
   });
 
   updateFolderSelectedState(id: number) {
+    // clone current UI state first
     const folderTree = structuredClone(this.uiFolderTree());
     const nodeToUpdate = findNodeById(id, folderTree);
 
     if (nodeToUpdate) {
       nodeToUpdate.selected = !nodeToUpdate.selected;
-      updateChildNodes(nodeToUpdate, nodeToUpdate.selected, folderTree);
+      updateAllChildNodes(nodeToUpdate, nodeToUpdate.selected, folderTree);
+      // set original folderTree to updated UI state
       this.folderTree.set(folderTree);
     }
   }
