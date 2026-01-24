@@ -5,7 +5,7 @@ button {
   color: var(--surface);
   border-radius: var(--border-radius);
   border: none;
-  transition: background-color ease 0.2s;
+  transition: background-color ease 0.15s;
 
   &:hover {
     background: var(--hover);
