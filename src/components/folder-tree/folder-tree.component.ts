@@ -41,7 +41,6 @@ export class FolderTreeComponent {
   }
 
   clearSelection() {
-    console.log('clear selection');
     // clone current UI state first
     const folderTree = structuredClone(this.uiFolderTree());
     const nodeToUpdate = findNodeById(0, folderTree);
