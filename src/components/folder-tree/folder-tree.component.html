@@ -50,7 +50,7 @@
 </ng-template>
 
 @let rootFolders = uiFolderTree().children;
-<section class="text-base">
+<aside class="text-base">
   <div class="root-folder">
     <ng-container
       *ngTemplateOutlet="recursiveFolders; context: { $implicit: rootFolders }"
@@ -58,4 +58,4 @@
   </div>
 
   <p>Selected item IDs: {{ selectedItems() }}</p>
-</section>
+</aside>

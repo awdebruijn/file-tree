@@ -1,14 +1,14 @@
 import { Component, inject } from '@angular/core';
-import { FolderTreeComponent } from '../../components/folder-tree/folder-tree.component';
 import { WareHouseService } from '../../services/ware-house.service';
 import { FolderData, TreeNode } from '../../models/schemas';
 import { itemFiller, treeNodeBuilder } from '../../helpers/folder-tree.helpers';
 import { catchError, filter, map, Observable } from 'rxjs';
+import { FolderSelector } from '../../components/folder-selector/folder-selector';
 import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-home',
-  imports: [FolderTreeComponent, AsyncPipe],
+  imports: [FolderSelector, AsyncPipe],
   templateUrl: './home.html',
   styleUrl: './home.scss',
   standalone: true,

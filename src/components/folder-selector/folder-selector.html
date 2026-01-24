@@ -1,0 +1,10 @@
+<section>
+  @if (folderTree(); as folderTree) {
+    <app-folder-tree-component
+      #folderTreeComponent
+      [folderTree]="folderTree"
+    ></app-folder-tree-component>
+
+    <button (click)="clearSelection()">Clear selection</button>
+  }
+</section>

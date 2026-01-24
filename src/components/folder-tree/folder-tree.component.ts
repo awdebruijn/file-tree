@@ -40,6 +40,19 @@ export class FolderTreeComponent {
     }
   }
 
+  clearSelection() {
+    console.log('clear selection');
+    // clone current UI state first
+    const folderTree = structuredClone(this.uiFolderTree());
+    const nodeToUpdate = findNodeById(0, folderTree);
+
+    if (nodeToUpdate) {
+      updateAllChildNodes(nodeToUpdate, false, folderTree);
+      // set original folderTree to updated UI state
+      this.folderTree.set(folderTree);
+    }
+  }
+
   updateItemSelectedState(id: number) {
     const folderTree = structuredClone(this.uiFolderTree());
     const itemToUpdate = findItemNodeById(id, folderTree);
