@@ -131,6 +131,74 @@ export function setNodeStates(node: TreeNode) {
   }
 }
 
+export function updateChildNodes(node: TreeNode, selected: boolean, folderTree: TreeNode) {
+  function traverseDown(node: TreeNode, selected: boolean) {
+    if (node.children.length > 0) {
+      node.children.forEach((child) => {
+        child.selected = selected;
+        traverseDown(child, selected);
+      });
+    }
+
+    if (node.items.length > 0) {
+      node.items.forEach((item) => {
+        const itemToUpdate = findItemNodeById(item.id, folderTree);
+        if (itemToUpdate) {
+          itemToUpdate.selected = selected;
+        }
+      });
+    }
+  }
+
+  traverseDown(node, selected);
+}
+
+export function getAllSelectedItems(root: TreeNode) {
+  let selectedIds: number[] = [];
+
+  function traverseDown(node: TreeNode) {
+    if (!node) {
+      return;
+    }
+
+    if (node.items.length > 0) {
+      node.items.forEach((item) => {
+        if (item.selected) {
+          selectedIds = [...selectedIds, item.id];
+        }
+      });
+    }
+
+    if (node.children.length > 0) {
+      node.children.forEach((child) => {
+        traverseDown(child);
+      });
+    }
+
+    return selectedIds;
+  }
+
+  return traverseDown(root);
+}
+
+export function updateFolderCheckBoxStates(root: TreeNode) {
+  const rootCopy = structuredClone(root);
+  function traverseTree(node: TreeNode) {
+    if (node.items.length > 0) {
+      setNodeStates(node);
+    }
+
+    if (node.children.length > 0) {
+      node.children.forEach((child) => {
+        traverseTree(child);
+      });
+    }
+
+    return node;
+  }
+  return traverseTree(rootCopy);
+}
+
 // TODO: make these function into one generic sorting function
 export function sortTreeNodesByName(nodes: TreeNode[]): TreeNode[] {
   const nodesCopy = [...nodes];
