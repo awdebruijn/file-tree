@@ -24,7 +24,6 @@ export class FolderTreeComponent {
 
   uiFolderTree = computed(() => {
     const folderTree = this.folderTree();
-    console.log(JSON.stringify(updateFolderCheckBoxStates(folderTree), null, 2));
     return updateFolderCheckBoxStates(folderTree);
   });
 

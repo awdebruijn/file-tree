@@ -74,10 +74,52 @@ export function getAllSelectedItems(root: TreeNode) {
   return traverseDown(root);
 }
 
-export function setNodeStates(node: TreeNode) {
-  const anySelected = node.items.some((item) => item.selected);
-  const allSelected = node.items.every((item) => item.selected);
-  const noneSelected = !node.items.every((item) => item.selected);
+export function updateFolderCheckBoxStates(root: TreeNode) {
+  const rootCopy = structuredClone(root);
+
+  // we want to know for all its items and all the items of its children and children's children what the selected states are:
+  // if any, all, or none are selected, then update the node's checkbox state
+  // after that, go down to its children and do the same
+
+  function setNodeStateBasedOnAllChildItems(node: TreeNode) {
+    // step 1
+    // collect all the items down the tree in an array
+    function getAllBranchItems(node: TreeNode, initialCollectedItems: ItemNode[]): ItemNode[] {
+      let collectedItems = [...initialCollectedItems];
+      if (node.items.length > 0) {
+        collectedItems = [...collectedItems, ...node.items];
+      }
+
+      if (node.children.length > 0) {
+        for (let child of node.children) {
+          collectedItems = [...getAllBranchItems(child, collectedItems)];
+        }
+      }
+
+      return collectedItems;
+    }
+
+    // then deduce the node state from them
+    setNodeStates(node, getAllBranchItems(node, []));
+
+    // step 2
+    // do the same for each child of the node
+    if (node.children.length > 0) {
+      for (let child of node.children) {
+        setNodeStateBasedOnAllChildItems(child);
+      }
+    }
+
+    return node;
+  }
+
+  return setNodeStateBasedOnAllChildItems(rootCopy);
+}
+
+export function setNodeStates(node: TreeNode, allItems: ItemNode[]) {
+  const anySelected = allItems.some((item) => item.selected);
+  const allSelected = allItems.every((item) => item.selected);
+  const noneSelected = !allItems.every((item) => item.selected);
 
   if (anySelected && !allSelected) {
     node.indeterminate = true;
@@ -93,22 +135,4 @@ export function setNodeStates(node: TreeNode) {
   if (noneSelected) {
     node.selected = false;
   }
-}
-
-export function updateFolderCheckBoxStates(root: TreeNode) {
-  const rootCopy = structuredClone(root);
-  function traverseTree(node: TreeNode) {
-    if (node.items.length > 0) {
-      setNodeStates(node);
-    }
-
-    if (node.children.length > 0) {
-      node.children.forEach((child) => {
-        traverseTree(child);
-      });
-    }
-
-    return node;
-  }
-  return traverseTree(rootCopy);
 }
