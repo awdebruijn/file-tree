@@ -1,5 +1,6 @@
 import { ItemNode, TreeNode } from '../../models/schemas';
 
+// TODO: write unit tests
 export function findItemNodeById(id: number, root: TreeNode): ItemNode | undefined {
   function findItemOnNode(node: TreeNode) {
     return node.items.find((item) => item.id === id);
@@ -100,7 +101,7 @@ export function updateFolderCheckBoxStates(root: TreeNode) {
     }
 
     // then deduce the node state from them
-    setNodeStates(node, getAllBranchItems(node, []));
+    setNodeCheckBoxStates(node, getAllBranchItems(node, []));
 
     // step 2
     // do the same for each child of the node
@@ -116,7 +117,7 @@ export function updateFolderCheckBoxStates(root: TreeNode) {
   return setNodeStateBasedOnAllChildItems(rootCopy);
 }
 
-export function setNodeStates(node: TreeNode, allItems: ItemNode[]) {
+export function setNodeCheckBoxStates(node: TreeNode, allItems: ItemNode[]) {
   const anySelected = allItems.some((item) => item.selected);
   const allSelected = allItems.every((item) => item.selected);
   const noneSelected = !allItems.every((item) => item.selected);

@@ -6,8 +6,7 @@ import {
   treeNodeBuilder,
 } from './folder-tree.helpers';
 import { describe, expect, it } from 'vitest';
-import { FolderData } from '../models/schemas';
-import { TreeNode } from '../models/types';
+import { FolderData, TreeNode } from '../models/schemas';
 
 describe('folder-tree helpers', () => {
   it('treeNodeBuilder builds a nested tree and sorts siblings by name', () => {
@@ -50,10 +49,10 @@ describe('folder-tree helpers', () => {
 
   it('sortTreeNodesByName sorts nodes by name', () => {
     const children = [
-      { id: 1, name: 'Charlie', children: [], items: [] },
-      { id: 2, name: 'Alpha', children: [], items: [] },
-      { id: 3, name: 'Bravo', children: [], items: [] },
-    ];
+      { id: 1, name: 'Charlie', children: [], items: [], selected: false, indeterminate: false },
+      { id: 2, name: 'Alpha', children: [], items: [], selected: false, indeterminate: false },
+      { id: 3, name: 'Bravo', children: [], items: [], selected: false, indeterminate: false },
+    ] as TreeNode[];
 
     const sorted = sortTreeNodesByName(children);
     expect(sorted.map((c) => c.name)).toEqual(['Alpha', 'Bravo', 'Charlie']);

@@ -1,7 +1,7 @@
 import { Folder, FolderData, ItemNode, TreeNode } from '../models/schemas';
 
 export function treeNodeBuilder(folderData: FolderData) {
-  const foldersData: Folder[] = [...folderData.folders.data];
+  const folders: Folder[] = [...folderData.folders.data];
   const folderTree: TreeNode = {
     id: 0,
     name: 'root',
@@ -11,8 +11,8 @@ export function treeNodeBuilder(folderData: FolderData) {
     indeterminate: false,
   };
 
-  foldersData.forEach((currentFolderData) => {
-    const [id, name, parentId] = currentFolderData;
+  folders.forEach((currentFolder) => {
+    const [id, name, parentId] = currentFolder;
     const newFolderNode: TreeNode = {
       id,
       name,
