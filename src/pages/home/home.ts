@@ -3,7 +3,7 @@ import { FolderTreeComponent } from '../../components/folder-tree/folder-tree.co
 import { WareHouseService } from '../../services/ware-house.service';
 import { FolderData, TreeNode } from '../../models/schemas';
 import { itemFiller, treeNodeBuilder } from '../../helpers/folder-tree.helpers';
-import { filter, map, Observable } from 'rxjs';
+import { catchError, filter, map, Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 
 @Component({
@@ -21,6 +21,9 @@ export class Home {
     this.folderTree$ = this.wareHouseService.getFolderData().pipe(
       map((data: FolderData) => itemFiller(data, treeNodeBuilder(data))),
       filter((data) => data !== null),
+      catchError((err) => {
+        throw 'An error occurred while fetching folder data' + JSON.stringify(err);
+      }),
     );
   }
 }
