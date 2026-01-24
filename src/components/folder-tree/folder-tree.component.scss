@@ -9,6 +9,7 @@ input[type='checkbox'] {
 }
 
 .root-folder {
+  position: relative;
   padding-top: var(--half-spacing);
   padding-bottom: var(--half-spacing);
   margin-bottom: var(--default-spacing);
@@ -25,8 +26,4 @@ label {
 .folder-header,
 li.item {
   padding: 7px 0;
-
-  &:hover {
-    background-color: var(--hover);
-  }
 }

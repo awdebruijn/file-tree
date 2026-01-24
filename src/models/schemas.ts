@@ -34,6 +34,7 @@ const TreeNodeSchema = z.object({
   },
   items: z.array(ItemNodeSchema),
   selected: z.boolean(),
+  indeterminate: z.boolean(),
 });
 
 export type ItemNode = z.infer<typeof ItemNodeSchema>;

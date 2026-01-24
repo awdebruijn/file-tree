@@ -7,7 +7,7 @@
             type="checkbox"
             [id]="'folder' + folder.id"
             [checked]="folder.selected"
-            [indeterminate]=""
+            [indeterminate]="folder.indeterminate"
             (click)="
               $event.preventDefault();
               $event.stopPropagation();
@@ -45,7 +45,7 @@
   </ul>
 </ng-template>
 
-@let rootFolders = folderTree().children;
+@let rootFolders = uiFolderTree().children;
 <section class="text-base">
   <div class="root-folder">
     <ng-container

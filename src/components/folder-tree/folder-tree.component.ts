@@ -1,6 +1,6 @@
 import { Component, computed, model } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
-import { findItemNodeById, findNodeById } from '../../helpers/folder-tree.helpers';
+import { findItemNodeById, findNodeById, setNodeStates } from '../../helpers/folder-tree.helpers';
 import { TreeNode } from '../../models/schemas';
 
 @Component({
@@ -14,6 +14,12 @@ export class FolderTreeComponent {
   folderTree = model.required<TreeNode>();
   selectedItems = computed(() => {
     return this.getAllSelectedItems(this.folderTree());
+  });
+
+  uiFolderTree = computed(() => {
+    const folderTree = this.folderTree();
+    console.log(JSON.stringify(this.updateFolderCheckBoxStates(folderTree), null, 2));
+    return this.updateFolderCheckBoxStates(folderTree);
   });
 
   updateFolderSelectedState(id: number) {
@@ -83,5 +89,23 @@ export class FolderTreeComponent {
     }
 
     return traverseDown(root);
+  }
+
+  updateFolderCheckBoxStates(root: TreeNode) {
+    const rootCopy = structuredClone(root);
+    function traverseTree(node: TreeNode) {
+      if (node.items.length > 0) {
+        setNodeStates(node);
+      }
+
+      if (node.children.length > 0) {
+        node.children.forEach((child) => {
+          traverseTree(child);
+        });
+      }
+
+      return node;
+    }
+    return traverseTree(rootCopy);
   }
 }

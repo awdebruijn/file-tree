@@ -2,7 +2,14 @@ import { Folder, FolderData, ItemNode, TreeNode } from '../models/schemas';
 
 export function treeNodeBuilder(folderData: FolderData) {
   const foldersData: Folder[] = [...folderData.folders.data];
-  const folderTree: TreeNode = { id: 0, name: 'root', children: [], items: [], selected: false };
+  const folderTree: TreeNode = {
+    id: 0,
+    name: 'root',
+    children: [],
+    items: [],
+    selected: false,
+    indeterminate: false,
+  };
 
   foldersData.forEach((currentFolderData) => {
     const [id, name, parentId] = currentFolderData;
@@ -12,6 +19,7 @@ export function treeNodeBuilder(folderData: FolderData) {
       children: [],
       items: [],
       selected: false,
+      indeterminate: false,
     };
 
     // If folder has no parent, add to root node's children
@@ -100,6 +108,27 @@ export function findItemNodeById(id: number, root: TreeNode): ItemNode | undefin
   }
 
   return traverse(root);
+}
+
+export function setNodeStates(node: TreeNode) {
+  const anySelected = node.items.some((item) => item.selected);
+  const allSelected = node.items.every((item) => item.selected);
+  const noneSelected = !node.items.every((item) => item.selected);
+
+  if (anySelected && !allSelected) {
+    node.indeterminate = true;
+    node.selected = false;
+    return;
+  }
+
+  node.indeterminate = false;
+  if (allSelected) {
+    node.selected = true;
+  }
+
+  if (noneSelected) {
+    node.selected = false;
+  }
 }
 
 // TODO: make these function into one generic sorting function
