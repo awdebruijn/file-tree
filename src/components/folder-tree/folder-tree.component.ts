@@ -1,4 +1,4 @@
-import { Component, computed, model, signal } from '@angular/core';
+import { Component, computed, model } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 import { findItemNodeById, findNodeById } from '../../helpers/folder-tree.helpers';
 import { TreeNode } from '../../models/schemas';
@@ -12,7 +12,6 @@ import { TreeNode } from '../../models/schemas';
 })
 export class FolderTreeComponent {
   folderTree = model.required<TreeNode>();
-  level = signal(0);
   selectedItems = computed(() => {
     return this.getAllSelectedItems(this.folderTree());
   });

@@ -8,7 +8,11 @@
             [id]="'folder' + folder.id"
             [checked]="folder.selected"
             [indeterminate]=""
-            (click)="updateFolderSelectedState(folder.id)"
+            (click)="
+              $event.preventDefault();
+              $event.stopPropagation();
+              updateFolderSelectedState(folder.id)
+            "
             class="mr-2"
           />
           <label [for]="'folder' + folder.id">{{ folder.name }}</label>
@@ -25,7 +29,11 @@
                 type="checkbox"
                 [id]="'item' + item.id"
                 [checked]="item.selected"
-                (click)="updateItemSelectedState(item.id)"
+                (click)="
+                  $event.preventDefault();
+                  $event.stopPropagation();
+                  updateItemSelectedState(item.id)
+                "
                 class="mr-2"
               />
               <label [for]="'item' + item.id">{{ item.name }}</label>
@@ -37,7 +45,7 @@
   </ul>
 </ng-template>
 
-@let rootFolders = folderTree()?.children;
+@let rootFolders = folderTree().children;
 <section class="text-base">
   <div class="root-folder">
     <ng-container

@@ -1,3 +1,5 @@
 <main>
-  <app-folder-tree-component [folderTree]="folderTree$ | async"></app-folder-tree-component>
+  @if (folderTree$ | async; as tree) {
+    <app-folder-tree-component [folderTree]="tree"></app-folder-tree-component>
+  }
 </main>
