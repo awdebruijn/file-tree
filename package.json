@@ -1,6 +1,7 @@
 {
   "name": "file-tree",
   "version": "0.0.0",
+  "author": "A.W. de Bruijn",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
